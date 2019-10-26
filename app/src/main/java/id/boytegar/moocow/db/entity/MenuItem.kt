@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "menu_item")
-class MenuItem(name: String, desc : String, price: Double, price_discount: Double, discount: Int) {
+class MenuItem(name: String, desc : String, price: Double, price_discount: Double, discount: Int, avail: Int) {
     @NonNull
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null
@@ -14,4 +14,5 @@ class MenuItem(name: String, desc : String, price: Double, price_discount: Doubl
     val price = price
     val price_discount = price_discount
     val discount  = discount
+    val avail = avail
 }
