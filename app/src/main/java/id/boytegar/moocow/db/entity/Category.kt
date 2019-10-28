@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "category")
-class Catergory(name: String, desc : String) {
+class Category(name: String, desc : String) {
     @NonNull
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null
