@@ -65,7 +65,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:hint="Harga Menu(Rp)"
-                android:inputType="text" />
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -81,6 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:text="Diskon"
+                android:layout_marginBottom="@dimen/_3sdp"
                 android:textSize="@dimen/_14ssp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -94,7 +95,7 @@
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:hint="Harga Diskon(Rp)"
                     android:enabled="false"
-                    android:inputType="text" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -139,12 +140,24 @@
                 android:layout_marginRight="@dimen/_10sdp"
                 android:textColor="#000000"
                 android:textSize="@dimen/_14ssp" />
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_3sdp"
+         />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="?android:attr/listDivider" />
+</LinearLayout>
 
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 

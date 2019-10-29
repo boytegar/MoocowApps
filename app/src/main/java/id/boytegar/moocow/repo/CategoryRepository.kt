@@ -12,11 +12,6 @@ class CategoryRepository(application: Application) {
     private val categoryDao = db.DaoCategory()
     lateinit var list: LiveData<List<Category>>
 
-    init {
-        Async {
-            list = categoryDao.getListCategory()
-        }
-    }
 
     fun insert(category: Category) {
         Async {
@@ -50,6 +45,7 @@ class CategoryRepository(application: Application) {
 //    }
 
     fun getAllCategory(): LiveData<List<Category>> {
+        list = categoryDao.getListCategory()
         return list
     }
 

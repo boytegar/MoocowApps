@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import id.boytegar.moocow.R
 import kotlinx.android.synthetic.main.fragment_setting.view.*
 import id.boytegar.moocow.AddPrinterActivity
-
+import id.boytegar.moocow.AddMenuActivity
 /**
  * A simple [Fragment] subclass.
  */
@@ -25,6 +25,10 @@ class SettingFragment : Fragment() {
         val v =  inflater.inflate(R.layout.fragment_setting, container, false)
         v.btn_add_device.setOnClickListener {
             val intent = Intent(activity!!, AddPrinterActivity::class.java)
+            startActivity(intent)
+        }
+        v.btn_menu.setOnClickListener {
+            val intent = Intent(activity!!, AddMenuActivity::class.java)
             startActivity(intent)
         }
         return v
