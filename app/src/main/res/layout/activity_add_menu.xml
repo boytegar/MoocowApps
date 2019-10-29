@@ -93,6 +93,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:hint="Harga Diskon(Rp)"
+                    android:enabled="false"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
