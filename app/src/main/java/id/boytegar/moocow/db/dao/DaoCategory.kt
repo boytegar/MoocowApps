@@ -1,21 +1,21 @@
 package id.boytegar.moocow.db.dao
 
-import androidx.paging.DataSource
+import androidx.lifecycle.LiveData
 import androidx.room.*
-import id.boytegar.moocow.db.entity.Catergory
+import id.boytegar.moocow.db.entity.Category
 
 @Dao
 interface DaoCategory{
     @Insert
-    fun insert(catergory: Catergory)
+    fun insert(category: Category)
     @Update
-    fun update(catergory: Catergory)
+    fun update(category: Category)
     @Delete
-    fun delete(catergory: Catergory)
+    fun delete(category: Category)
     @Query("delete from category")
     fun deleteAll()
     @Query("select * from category")
-    fun getListUsers(): DataSource.Factory<Int, Catergory>
+    fun getListCategory(): LiveData<List<Category>>
     @Query("delete from category where id=:id")
     fun  deleteById(id: Int)
     @Query("update category set name=:name where id=:id ")
