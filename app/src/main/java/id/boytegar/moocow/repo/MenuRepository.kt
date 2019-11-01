@@ -2,6 +2,7 @@ package id.boytegar.moocow.repo
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import id.boytegar.moocow.db.MoocowDb
 import id.boytegar.moocow.db.entity.MenuItem
 import id.boytegar.moocow.helper.Async
@@ -9,13 +10,7 @@ import id.boytegar.moocow.helper.Async
 class MenuRepository(application: Application) {
     val db = MoocowDb.getInstance(application)
     private val menuDao = db.DaoMenuItem()
-    lateinit var list: LiveData<List<MenuItem>>
 
-    init {
-        Async {
-            //list = userDao.getListUsers()
-        }
-    }
 
     fun insert(menuItem: MenuItem) {
         Async {
@@ -48,7 +43,8 @@ class MenuRepository(application: Application) {
 //        }
 //    }
 
-    fun getAllUser(): LiveData<List<MenuItem>> {
+    fun getAllUser(): DataSource.Factory<Int, MenuItem> {
+        val list = menuDao.getListMenu()
         return list
     }
 
