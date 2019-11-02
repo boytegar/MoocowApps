@@ -8,6 +8,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import id.boytegar.moocow.viewmodel.MenuItemViewModel
 import kotlinx.android.synthetic.main.activity_menu.*
+import androidx.recyclerview.widget.LinearLayoutManager
+
+
+
+
 
 class MenuActivity : AppCompatActivity() {
 
@@ -23,8 +28,19 @@ class MenuActivity : AppCompatActivity() {
             val intent = Intent(this, AddMenuActivity::class.java)
             startActivity(intent)
         }
+
+
         menuItemViewModel.getListMenu().observe(this, Observer {
             Log.e("LIST MENU",it.toString())
+            val linearLayoutManager = LinearLayoutManager(this)
+            list_menu.layoutManager = linearLayoutManager
+            list_menu.hasFixedSize()
+            val menuAdapter = MenuAdapter(this,  R.layout.list_menu_settings)
+            menuAdapter.submitList(it)
+            list_menu.adapter = menuAdapter
+            menuAdapter.onItemDelete = {
+
+            }
         })
     }
 }
