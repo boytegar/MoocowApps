@@ -20,4 +20,6 @@ interface DaoMenuItem{
     fun  deleteById(id: Int)
     @Query("update category set name=:name where id=:id ")
     fun updateById(id: Int, name: String)
+    @Query("SELECT * from category where name LIKE :query")
+    fun searchMenu(query: String): DataSource.Factory<Int, MenuItem>
 }

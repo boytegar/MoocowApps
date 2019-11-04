@@ -64,7 +64,12 @@ class AddMenuActivity : AppCompatActivity() {
         }
 
         checkBox.setOnCheckedChangeListener { compoundButton, b ->
-            edt_price_diskon.isEnabled = b
+            if(b){
+                edt_price_diskon.isEnabled = true
+            }else{
+                edt_price_diskon.isEnabled = false
+                edt_price_diskon.setText("0")
+            }
         }
 
     }

@@ -29,9 +29,9 @@ class MenuAdapter(
 
     //  var view
     override fun onBindViewHolder(holderPerson: PersonViewHolder, position: Int) {
-        var person = getItem(position)
+        var person = getItem(position)!!
 
-        holderPerson.bind(person!!)
+        holderPerson.bind(person)
 
     }
 
@@ -60,11 +60,11 @@ class MenuAdapter(
                 holder.ic_discount.visibility = View.GONE
             }
 
-            holder.btn_edit.setOnClickListener {
-                onItemEdit!!.invoke(profile)
+            itemView.btn_edit.setOnClickListener {
+                onItemEdit?.invoke(profile)
             }
-            holder.btn_delete.setOnClickListener {
-                onItemDelete!!.invoke(profile)
+            itemView.btn_delete.setOnClickListener {
+                onItemDelete?.invoke(profile)
             }
         }
 

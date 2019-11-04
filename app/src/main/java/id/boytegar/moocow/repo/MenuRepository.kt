@@ -37,11 +37,9 @@ class MenuRepository(application: Application) {
         }
     }
 
-//    fun updateById(id: Int, name: String, email: String){
-//        Async{
-//            dataImageDao.updateById(id, name, email)
-//        }
-//    }
+    fun searchMenu(search: String){
+        menuDao.searchMenu(search)
+    }
 
     fun getAllUser(): DataSource.Factory<Int, MenuItem> {
         val list = menuDao.getListMenu()

@@ -3,6 +3,8 @@ package id.boytegar.moocow.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -10,10 +12,16 @@ import id.boytegar.moocow.db.entity.Category
 import id.boytegar.moocow.db.entity.MenuItem
 import id.boytegar.moocow.repo.CategoryRepository
 import id.boytegar.moocow.repo.MenuRepository
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import java.util.function.Function
+
 
 class MenuItemViewModel (application: Application): AndroidViewModel(application){
     private val categoryRepository = CategoryRepository(application)
     val menuRepository  = MenuRepository(application)
+
+    lateinit var teamAllList: LiveData<PagedList<MenuItem>>
+    var filterTextAll = MutableLiveData<String>()
 
     private var personsLiveData: LiveData<PagedList<MenuItem>>
     init {
@@ -23,6 +31,18 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
             20)
         personsLiveData = pagedListBuilder.build()
     }
+
+    fun initAllTeams() {
+        val config = (PagedList.Config.Builder())
+            .setPageSize(20)
+            .build()
+
+
+        teamAllList = Transformations.switchMap(filterTextAll,())
+    }
+
+
+
     fun getPersonsLiveData() = personsLiveData
 
     fun insertMenu(menuItem: MenuItem){
