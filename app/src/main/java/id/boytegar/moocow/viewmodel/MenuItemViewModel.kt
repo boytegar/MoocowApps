@@ -22,21 +22,20 @@ import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 class MenuItemViewModel (application: Application): AndroidViewModel(application){
     private val categoryRepository = CategoryRepository(application)
     val menuRepository  = MenuRepository(application)
-
-
     var filterTextAll = MutableLiveData<String>()
 
-    private var personsLiveData: LiveData<PagedList<MenuItem>>
-    init {
-        val factory: DataSource.Factory<Int, MenuItem> = menuRepository.getAllUser()
+//    init {
+//        val factory: DataSource.Factory<Int, MenuItem> = menuRepository.getAllUser()
+//
+//        val pagedListBuilder: LivePagedListBuilder<Int, MenuItem> = LivePagedListBuilder(factory,
+//            20)
+//        personsLiveData = pagedListBuilder.build()
+//    }
 
-        val pagedListBuilder: LivePagedListBuilder<Int, MenuItem> = LivePagedListBuilder(factory,
-            20)
-        personsLiveData = pagedListBuilder.build()
-    }
+    fun getAllData(): LiveData<PagedList<MenuItem>> {
+        var personsLiveData: LiveData<PagedList<MenuItem>>
 
-    fun initAllTeams(): LiveData<PagedList<MenuItem>> {
-        Transformations.switchMap<String, PagedList<MenuItem>>(
+        return Transformations.switchMap<String, PagedList<MenuItem>>(
             filterTextAll
         ) { input ->
             if (input == null || input.equals("") || input.equals("%%")) {
@@ -44,13 +43,13 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
                 val factory: DataSource.Factory<Int, MenuItem> = menuRepository.getAllUser()
                 val pagedListBuilder: LivePagedListBuilder<Int, MenuItem> = LivePagedListBuilder(factory,
                     20)
-                val personsLiveData = pagedListBuilder.build()
+                 personsLiveData = pagedListBuilder.build()
                 return@switchMap personsLiveData
             } else {
                 val factory: DataSource.Factory<Int, MenuItem> = menuRepository.getsearchMenu(input)
                 val pagedListBuilder: LivePagedListBuilder<Int, MenuItem> = LivePagedListBuilder(factory,
                     20)
-                val personsLiveData = pagedListBuilder.build()
+                 personsLiveData = pagedListBuilder.build()
                 return@switchMap personsLiveData
             }
 
@@ -58,8 +57,6 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
     }
 
 
-
-    fun getPersonsLiveData() = personsLiveData
 
     fun insertMenu(menuItem: MenuItem){
         menuRepository.insert(menuItem)
@@ -78,8 +75,6 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
 
        return categoryRepository.getAllCategory()
    }
-    fun getListMenu(): LiveData<PagedList<MenuItem>> {
-        return personsLiveData
-    }
+
 
 }

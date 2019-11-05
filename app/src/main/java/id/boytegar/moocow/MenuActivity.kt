@@ -17,6 +17,13 @@ import id.boytegar.moocow.viewmodel.MenuItemViewModel
 import kotlinx.android.synthetic.main.activity_menu.*
 import kotlinx.android.synthetic.main.dialog_edit_menu.view.*
 import org.jetbrains.anko.toast
+import android.text.Editable
+import android.text.TextWatcher
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 
 class MenuActivity : AppCompatActivity() {
@@ -35,7 +42,7 @@ class MenuActivity : AppCompatActivity() {
         }
 
 
-        menuItemViewModel.getListMenu().observe(this, Observer {
+        menuItemViewModel.getAllData().observe(this, Observer {
             Log.e("LIST MENU",it.toString())
             val linearLayoutManager = LinearLayoutManager(this)
             list_menu.layoutManager = linearLayoutManager
@@ -51,8 +58,21 @@ class MenuActivity : AppCompatActivity() {
             }
         })
 
+        menuItemViewModel.filterTextAll.value = ""
+
         menuItemViewModel.getListCategory().observe(this, Observer {
             list_category = it
+        })
+
+        edt_search.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            override fun afterTextChanged(editable: Editable) {
+                //just set the current value to search.
+                menuItemViewModel.filterTextAll.value = "%$editable%"
+            }
         })
     }
 
