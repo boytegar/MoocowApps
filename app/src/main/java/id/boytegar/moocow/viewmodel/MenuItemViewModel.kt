@@ -14,13 +14,16 @@ import id.boytegar.moocow.repo.CategoryRepository
 import id.boytegar.moocow.repo.MenuRepository
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import java.util.function.Function
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 
 class MenuItemViewModel (application: Application): AndroidViewModel(application){
     private val categoryRepository = CategoryRepository(application)
     val menuRepository  = MenuRepository(application)
 
-    lateinit var teamAllList: LiveData<PagedList<MenuItem>>
+
     var filterTextAll = MutableLiveData<String>()
 
     private var personsLiveData: LiveData<PagedList<MenuItem>>
@@ -32,13 +35,26 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
         personsLiveData = pagedListBuilder.build()
     }
 
-    fun initAllTeams() {
-        val config = (PagedList.Config.Builder())
-            .setPageSize(20)
-            .build()
+    fun initAllTeams(): LiveData<PagedList<MenuItem>> {
+        Transformations.switchMap<String, PagedList<MenuItem>>(
+            filterTextAll
+        ) { input ->
+            if (input == null || input.equals("") || input.equals("%%")) {
+                //check if the current value is empty load all data else search
+                val factory: DataSource.Factory<Int, MenuItem> = menuRepository.getAllUser()
+                val pagedListBuilder: LivePagedListBuilder<Int, MenuItem> = LivePagedListBuilder(factory,
+                    20)
+                val personsLiveData = pagedListBuilder.build()
+                return@switchMap personsLiveData
+            } else {
+                val factory: DataSource.Factory<Int, MenuItem> = menuRepository.getsearchMenu(input)
+                val pagedListBuilder: LivePagedListBuilder<Int, MenuItem> = LivePagedListBuilder(factory,
+                    20)
+                val personsLiveData = pagedListBuilder.build()
+                return@switchMap personsLiveData
+            }
 
-
-        teamAllList = Transformations.switchMap(filterTextAll,())
+        }
     }
 
 
@@ -65,4 +81,5 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
     fun getListMenu(): LiveData<PagedList<MenuItem>> {
         return personsLiveData
     }
+
 }

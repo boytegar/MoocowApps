@@ -37,8 +37,8 @@ class MenuRepository(application: Application) {
         }
     }
 
-    fun searchMenu(search: String){
-        menuDao.searchMenu(search)
+    fun getsearchMenu(search: String) : DataSource.Factory<Int, MenuItem>{
+       return menuDao.searchMenu(search)
     }
 
     fun getAllUser(): DataSource.Factory<Int, MenuItem> {
