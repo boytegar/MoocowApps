@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_add_printer.*
 import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothSocket
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.widget.ArrayAdapter
@@ -15,16 +16,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import java.nio.file.Files.size
 import android.widget.Toast
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.R.attr.name
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.R.attr.name
-
-
+import org.jetbrains.anko.toast
 
 
 class AddPrinterActivity : AppCompatActivity() {
@@ -32,8 +24,11 @@ class AddPrinterActivity : AppCompatActivity() {
     val EXTRA_DEVICE_ADDRESS = "device_address"
     private val applicationUUID = UUID
         .fromString("00001101-0000-1000-8000-00805F9B34FB")
+   // static private BluetoothSocket mbtSocket = null
+    lateinit var mbtSocket : BluetoothSocket
     //   lateinit var newDeviceAdapter: ArrayAdapter<String>
     var list_data = ArrayList<String>()
+    var list_blue= ArrayList<BluetoothDevice>()
     var bAdapter = BluetoothAdapter.getDefaultAdapter()
     val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,34 +69,7 @@ class AddPrinterActivity : AppCompatActivity() {
         }
     }
 
-    private fun getBluetoothPairedDevices(deviceList: ArrayList<String>) {
-        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        if (bluetoothAdapter == null) {
-            Toast.makeText(
-                applicationContext,
-                "This device not support bluetooth",
-                Toast.LENGTH_LONG
-            ).show()
-        } else {
-            if (!bluetoothAdapter.isEnabled) {
-                val enableAdapter = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                startActivityForResult(enableAdapter, 0)
-            }
-            val all_devices = bluetoothAdapter.bondedDevices
-            if (all_devices.size > 0) {
-                for (currentDevice in all_devices) {
-                    Log.e("DEVICE LIST ", "${currentDevice!!.name} ++ ${currentDevice!!.address}")
-                    deviceList.add("Device Name: " + currentDevice.name + "\nDevice Address: " + currentDevice.address)
-                    list_bluetooth.setAdapter(
-                        ArrayAdapter(
-                            application,
-                            android.R.layout.simple_list_item_1, deviceList
-                        )
-                    )
-                }
-            }
-        }
-    }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -118,39 +86,36 @@ class AddPrinterActivity : AppCompatActivity() {
                     intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
                 Log.e("DEVICE LIST ", "${device!!.name} ++ ${device!!.address}")
                 list_data.add(device!!.name + "\n" + device.address)
+                list_blue.add(device)
                 list_bluetooth.adapter = ArrayAdapter<String>(
                     context,
                     android.R.layout.simple_list_item_1, list_data
                 )
+                list_bluetooth.setOnItemClickListener { adapterView, view, i, l ->
+                    val bond = createBond(list_blue[i])
+                    val gotuuid = list_blue[i]
+                        .fetchUuidsWithSdp()
+                    val uuid =  list_blue[i].getUuids()[0]
+                        .getUuid()
+                    mbtSocket =  list_blue[i].createRfcommSocketToServiceRecord(uuid)
+                    
+                    if(bond){
+                        toast("PAIRED")
+                    }else{
+                        toast("NOT PAIRED")
+                    }
+                }
 
             }
         }
     }
 
-    private fun pairDevice(device: BluetoothDevice) {
-        try {
-            Log.d("pairDevice()", "Start Pairing...")
-            val m = device.javaClass.getMethod("createBond", *null as Array<Class<*>>?)
-            m.invoke(device, null as Array<Any>?)
-            Log.d("pairDevice()", "Pairing finished.")
-        } catch (e: Exception) {
-            Log.e("pairDevice()", e.message)
-        }
-
-    }
-
-
-    //For UnPairing
-    private fun unpairDevice(device: BluetoothDevice) {
-        try {
-            Log.d("unpairDevice()", "Start Un-Pairing...")
-            val m = device.javaClass.getMethod("removeBond", *null as Array<Class<*>>?)
-            m.invoke(device, null as Array<Any>?)
-            Log.d("unpairDevice()", "Un-Pairing finished.")
-        } catch (e: Exception) {
-            Log.e("unpairDevice()", e.message)
-        }
-
+    @Throws(Exception::class)
+    fun createBond(btDevice: BluetoothDevice): Boolean {
+        val class1 = Class.forName("android.bluetooth.BluetoothDevice")
+        val createBondMethod = class1.getMethod("createBond")
+        val returnValue = createBondMethod.invoke(btDevice) as Boolean
+        return returnValue
     }
 
 }
