@@ -19,6 +19,12 @@ import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.R.attr.name
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.R.attr.name
+
+
 
 
 class AddPrinterActivity : AppCompatActivity() {
@@ -63,7 +69,7 @@ class AddPrinterActivity : AppCompatActivity() {
             //   getBluetoothPairedDevices(list_data)
             txt_bt.text = "Bluetooth Status : Active"
         }else{
-            unregisterReceiver(mReceiver)
+          //  unregisterReceiver(mReceiver)
             txt_bt.text = "Bluetooth Status : Not Active"
         }
     }
@@ -119,6 +125,32 @@ class AddPrinterActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    private fun pairDevice(device: BluetoothDevice) {
+        try {
+            Log.d("pairDevice()", "Start Pairing...")
+            val m = device.javaClass.getMethod("createBond", *null as Array<Class<*>>?)
+            m.invoke(device, null as Array<Any>?)
+            Log.d("pairDevice()", "Pairing finished.")
+        } catch (e: Exception) {
+            Log.e("pairDevice()", e.message)
+        }
+
+    }
+
+
+    //For UnPairing
+    private fun unpairDevice(device: BluetoothDevice) {
+        try {
+            Log.d("unpairDevice()", "Start Un-Pairing...")
+            val m = device.javaClass.getMethod("removeBond", *null as Array<Class<*>>?)
+            m.invoke(device, null as Array<Any>?)
+            Log.d("unpairDevice()", "Un-Pairing finished.")
+        } catch (e: Exception) {
+            Log.e("unpairDevice()", e.message)
+        }
+
     }
 
 }

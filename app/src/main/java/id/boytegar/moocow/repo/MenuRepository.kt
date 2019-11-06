@@ -41,6 +41,14 @@ class MenuRepository(application: Application) {
        return menuDao.searchMenu(search)
     }
 
+    fun getListDiscount(): DataSource.Factory<Int, MenuItem>{
+        return menuDao.getDiskonMenu()
+    }
+
+    fun getListByCategory(cat_id: Int): DataSource.Factory<Int, MenuItem>{
+        return menuDao.getByCategory(cat_id)
+    }
+
     fun getAllUser(): DataSource.Factory<Int, MenuItem> {
         val list = menuDao.getListMenu()
         return list
