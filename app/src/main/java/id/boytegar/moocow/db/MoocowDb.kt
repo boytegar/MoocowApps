@@ -7,10 +7,12 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import id.boytegar.moocow.db.dao.DaoCategory
 import id.boytegar.moocow.db.dao.DaoMenuItem
+import id.boytegar.moocow.db.entity.Cart
 import id.boytegar.moocow.db.entity.Category
 import id.boytegar.moocow.db.entity.MenuItem
+import id.boytegar.moocow.db.entity.Transactions
 
-@Database(entities = [(Category::class) , (MenuItem::class)], version = 1)
+@Database(entities = [(Category::class) , (MenuItem::class), (Cart::class), (Transactions::class)], version = 1)
 abstract class MoocowDb: RoomDatabase() {
 
     abstract fun DaoCategory(): DaoCategory

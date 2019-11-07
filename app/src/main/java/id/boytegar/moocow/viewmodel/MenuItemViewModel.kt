@@ -1,6 +1,7 @@
 package id.boytegar.moocow.viewmodel
 
 import android.app.Application
+import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,7 +24,7 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
     private val categoryRepository = CategoryRepository(application)
     val menuRepository  = MenuRepository(application)
     var filterTextAll = MutableLiveData<String>()
-
+    var b_device = MutableLiveData<BluetoothDevice>()
 //    init {
 //        val factory: DataSource.Factory<Int, MenuItem> = menuRepository.getAllUser()
 //

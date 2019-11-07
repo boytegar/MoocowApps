@@ -16,6 +16,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 import java.nio.file.Files.size
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProviders
+import id.boytegar.moocow.viewmodel.MenuItemViewModel
 import org.jetbrains.anko.toast
 
 
@@ -31,9 +33,12 @@ class AddPrinterActivity : AppCompatActivity() {
     var list_blue= ArrayList<BluetoothDevice>()
     var bAdapter = BluetoothAdapter.getDefaultAdapter()
     val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+    lateinit var menuItemViewModel: MenuItemViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_printer)
+        menuItemViewModel = ViewModelProviders.of(this).get(MenuItemViewModel::class.java)
+
         switch_bt.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
                 startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), 1)
@@ -49,9 +54,7 @@ class AddPrinterActivity : AppCompatActivity() {
             }
         }
 
-        list_bluetooth.setOnItemClickListener { adapterView, view, i, l ->
-            Toast.makeText(this,i.toString(),Toast.LENGTH_SHORT).show()
-        }
+
 
     }
 
@@ -92,6 +95,7 @@ class AddPrinterActivity : AppCompatActivity() {
                     android.R.layout.simple_list_item_1, list_data
                 )
                 list_bluetooth.setOnItemClickListener { adapterView, view, i, l ->
+                    menuItemViewModel.b_device.value = list_blue[i]
                     val bond = createBond(list_blue[i])
                     val gotuuid = list_blue[i]
                         .fetchUuidsWithSdp()
