@@ -98,7 +98,7 @@ class AddPrinterActivity : AppCompatActivity() {
                     val uuid =  list_blue[i].getUuids()[0]
                         .getUuid()
                     mbtSocket =  list_blue[i].createRfcommSocketToServiceRecord(uuid)
-                    
+
                     if(bond){
                         toast("PAIRED")
                     }else{

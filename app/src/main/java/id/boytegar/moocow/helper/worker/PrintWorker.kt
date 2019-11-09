@@ -27,6 +27,7 @@ class PrintWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) 
     lateinit var outputStream: OutputStream
     private val SPP_UUID = UUID
         .fromString("8ce255c0-200a-11e0-ac64-0800200c9a66")
+    //BT SOCKET BELUM
     override fun doWork(): Result {
 
         val taskData = inputData
@@ -42,7 +43,7 @@ class PrintWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) 
 
             val opstream = btsocket.outputStream
             outputStream = opstream!!
-        btsocket = DeviceList.getSocket();
+     //   btsocket = DeviceList.getSocket();
             try {
                 outputStream = btsocket.outputStream
                 val printformat = byteArrayOf(0x1B, 0x21, 0x03)
