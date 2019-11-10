@@ -20,7 +20,7 @@ class Transactions() {
     var total_change = 0.0
     var status = ""
     @TypeConverters(DataConverter::class)
-    var menu: List<MenuItem>? = null
+    var menu: List<Cart> = listOf()
 
     constructor(
         name_cashier: String,
@@ -31,7 +31,7 @@ class Transactions() {
         total_cash: Double,
         total_change: Double,
         status: String,
-        menu: List<MenuItem>
+        menu: List<Cart>
         ) : this() {
         this.name_cashier = name_cashier
         this.name_buyer = name_buyer

@@ -19,17 +19,19 @@ import android.graphics.Bitmap
 import id.boytegar.moocow.helper.Utils
 import androidx.core.app.ActivityCompat.startActivityForResult
 import android.content.Intent
+import androidx.lifecycle.ViewModelProviders
+import id.boytegar.moocow.viewmodel.MenuItemViewModel
 import java.util.*
 
 
 class PrintWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
     lateinit var btsocket: BluetoothSocket
     lateinit var outputStream: OutputStream
-    private val SPP_UUID = UUID
-        .fromString("8ce255c0-200a-11e0-ac64-0800200c9a66")
     //BT SOCKET BELUM
-    override fun doWork(): Result {
+    private val SPP_UUID = UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66")
+    var context = ctx
 
+    override fun doWork(): Result {
         val taskData = inputData
         val title = taskData.getString("title")
         val desc = taskData.getString("desc")
@@ -43,7 +45,11 @@ class PrintWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) 
 
             val opstream = btsocket.outputStream
             outputStream = opstream!!
+
      //   btsocket = DeviceList.getSocket();
+
+      //  btsocket = DeviceList.getSocket();
+
             try {
                 outputStream = btsocket.outputStream
                 val printformat = byteArrayOf(0x1B, 0x21, 0x03)
@@ -110,7 +116,7 @@ class PrintWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) 
     fun printPhoto(img: Int) {
         try {
             val bmp = BitmapFactory.decodeResource(
-                getResources(),
+             context.resources,
                 img
             )
             if (bmp != null) {
