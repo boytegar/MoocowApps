@@ -19,11 +19,7 @@ import kotlinx.android.synthetic.main.dialog_edit_menu.view.*
 import org.jetbrains.anko.toast
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
+import id.boytegar.moocow.adapter.MenuAdapter
 
 
 class MenuActivity : AppCompatActivity() {
@@ -47,7 +43,8 @@ class MenuActivity : AppCompatActivity() {
             val linearLayoutManager = LinearLayoutManager(this)
             list_menu.layoutManager = linearLayoutManager
             list_menu.hasFixedSize()
-            val menuAdapter = MenuAdapter(this,  R.layout.list_menu_settings)
+            val menuAdapter =
+                MenuAdapter(this, R.layout.list_menu_settings)
             menuAdapter.submitList(it)
             list_menu.adapter = menuAdapter
             menuAdapter.onItemDelete = { menu ->

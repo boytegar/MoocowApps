@@ -1,11 +1,9 @@
-package id.boytegar.moocow
+package id.boytegar.moocow.adapter
 
 import android.content.Context
-import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import id.boytegar.moocow.db.entity.MenuItem

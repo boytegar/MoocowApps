@@ -27,8 +27,10 @@ import java.util.*
 class PrintWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
     lateinit var btsocket: BluetoothSocket
     lateinit var outputStream: OutputStream
+    //BT SOCKET BELUM
     private val SPP_UUID = UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66")
     var context = ctx
+
     override fun doWork(): Result {
         val taskData = inputData
         val title = taskData.getString("title")
@@ -43,7 +45,11 @@ class PrintWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) 
 
             val opstream = btsocket.outputStream
             outputStream = opstream!!
+
+     //   btsocket = DeviceList.getSocket();
+
       //  btsocket = DeviceList.getSocket();
+
             try {
                 outputStream = btsocket.outputStream
                 val printformat = byteArrayOf(0x1B, 0x21, 0x03)

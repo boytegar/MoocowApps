@@ -20,7 +20,7 @@ class Transactions() {
     var total_change = 0.0
     var status = ""
     @TypeConverters(DataConverter::class)
-    var menu: List<Cart>? = null
+    var menu: List<Cart> = listOf()
 
     constructor(
         name_cashier: String,
