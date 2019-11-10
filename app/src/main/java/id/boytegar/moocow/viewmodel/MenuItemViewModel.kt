@@ -46,6 +46,18 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
                     20)
                  personsLiveData = pagedListBuilder.build()
                 return@switchMap personsLiveData
+            }else if(input == "promo"){
+                val factory: DataSource.Factory<Int, MenuItem> = menuRepository.getListDiscount()
+                val pagedListBuilder: LivePagedListBuilder<Int, MenuItem> = LivePagedListBuilder(factory,
+                    20)
+                personsLiveData = pagedListBuilder.build()
+                return@switchMap personsLiveData
+            }else if(checkNumeric(input)){
+                val factory: DataSource.Factory<Int, MenuItem> = menuRepository.getListByCategory(input.toInt())
+                val pagedListBuilder: LivePagedListBuilder<Int, MenuItem> = LivePagedListBuilder(factory,
+                    20)
+                personsLiveData = pagedListBuilder.build()
+                return@switchMap personsLiveData
             } else {
                 val factory: DataSource.Factory<Int, MenuItem> = menuRepository.getsearchMenu(input)
                 val pagedListBuilder: LivePagedListBuilder<Int, MenuItem> = LivePagedListBuilder(factory,
@@ -58,6 +70,13 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
     }
 
 
+
+    fun checkNumeric(str: String): Boolean{
+
+        var numeric = str.matches("-?\\d+(\\.\\d+)?".toRegex())
+        numeric = numeric
+        return numeric
+    }
 
     fun insertMenu(menuItem: MenuItem){
         menuRepository.insert(menuItem)

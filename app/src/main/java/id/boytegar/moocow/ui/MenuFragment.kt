@@ -4,8 +4,10 @@ package id.boytegar.moocow.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import id.boytegar.moocow.R
 import kotlinx.android.synthetic.main.fragment_menu.view.*
@@ -15,13 +17,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.boytegar.moocow.db.entity.Category
 import id.boytegar.moocow.viewmodel.MenuItemViewModel
-import id.boytegar.moocow.adapter.MenuAdapter
+import id.boytegar.moocow.adapter.MenuOrderAdapter
 import id.boytegar.moocow.adapter.CategoryAdapter
 class MenuFragment : Fragment() {
 
     lateinit var viewz: View
     lateinit var menuItemViewModel: MenuItemViewModel
-    lateinit var list_category: List<Category>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -38,13 +39,38 @@ class MenuFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(v.toolbar)
 
         menuItemViewModel.getListCategory().observe(this, Observer {
-            list_category = it
+            val list_cat = ArrayList<String>()
+            list_cat.add("All")
+            list_cat.add("Promo")
+            for (i in it.indices){
+                list_cat.add(it[i].name)
+            }
+            val catAdapter = CategoryAdapter(list_cat)
+            val linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            viewz.list_category.layoutManager = linearLayoutManager
+            // viewz.list_menu.hasFixedSize()
+            viewz.list_category.adapter = catAdapter
+            catAdapter.onItemClick={its ->
+                when(its){
+                    0->{
+                        menuItemViewModel.filterTextAll.value = ""
+                    }
+                    1->{
+                        menuItemViewModel.filterTextAll.value = "promo"
+                    }
+                    else->{
+                        val a = it[its-2]
+                        menuItemViewModel.filterTextAll.value = "${a.id}"
+                    }
+                }
+                Toast.makeText(activity!!, "CLICKED POS $it", Toast.LENGTH_SHORT).show()
+            }
         })
         menuItemViewModel.getAllData().observe(this, Observer {
             val linearLayoutManager = LinearLayoutManager(activity)
             v.list_menu.layoutManager = linearLayoutManager
             v.list_menu.hasFixedSize()
-            val menuAdapter = MenuAdapter(activity!!, R.layout.list_menu_settings)
+            val menuAdapter = MenuOrderAdapter(activity!!, R.layout.list_menu_settings)
             menuAdapter.submitList(it)
             v.list_menu.adapter = menuAdapter
             menuAdapter.onItemDelete = { menu ->
@@ -75,20 +101,7 @@ class MenuFragment : Fragment() {
 
     }
 
-    fun showCategory(){
-        val list_cat = ArrayList<String>()
-        list_cat.add("All")
-        list_cat.add("Promo")
-        for (i in list_category.indices){
-            list_cat.add(list_category[i].name)
-        }
-        val catAdapter = CategoryAdapter(list_cat)
-        val linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        viewz.list_menu.layoutManager = linearLayoutManager
-       // viewz.list_menu.hasFixedSize()
-        viewz.list_category.adapter = catAdapter
 
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
@@ -101,19 +114,20 @@ class MenuFragment : Fragment() {
             R.id.filter ->{
 
                 if(viewz.list_category.visibility == View.GONE){
+                    viewz.lyt_search.visibility = View.GONE
                     viewz.list_category.visibility = View.VISIBLE
-                    showCategory()
+                    menuItemViewModel.filterTextAll.value = ""
                 }else{
                     viewz.list_category.visibility = View.GONE
                 }
                 return true
             }
 
-
             R.id.search ->{
                 if(viewz.lyt_search.visibility == View.GONE){
                     viewz.lyt_search.visibility = View.VISIBLE
-
+                    viewz.list_category.visibility = View.GONE
+                    menuItemViewModel.filterTextAll.value = ""
                 }
                 else{
                     viewz.lyt_search.visibility = View.GONE

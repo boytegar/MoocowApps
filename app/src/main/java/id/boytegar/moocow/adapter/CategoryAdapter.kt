@@ -26,6 +26,11 @@ class CategoryAdapter(
 
         fun bind(name: String,  position: Int) {
             itemView.txt_name.text = name
+            if (position == index){
+                itemView.txt_name.setBackgroundResource(R.drawable.bg_cat_selected)
+            }else{
+                itemView.txt_name.setBackgroundResource(R.drawable.bg_cat_unselected)
+            }
             itemView.setOnClickListener {
                 //onItemClick?.invoke(room)
                 index = position
