@@ -9,20 +9,18 @@ import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import id.boytegar.moocow.db.entity.Cart
 import id.boytegar.moocow.db.entity.Category
 import id.boytegar.moocow.db.entity.MenuItem
+import id.boytegar.moocow.repo.CartRepository
 import id.boytegar.moocow.repo.CategoryRepository
 import id.boytegar.moocow.repo.MenuRepository
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import java.util.function.Function
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
 
 
 class MenuItemViewModel (application: Application): AndroidViewModel(application){
     private val categoryRepository = CategoryRepository(application)
     val menuRepository  = MenuRepository(application)
+    var cartRepository = CartRepository(application)
     var filterTextAll = MutableLiveData<String>()
     var b_device = MutableLiveData<BluetoothDevice>()
 //    init {
@@ -92,9 +90,10 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
         categoryRepository.insert(category)
     }
    fun getListCategory(): LiveData<List<Category>>{
-
        return categoryRepository.getAllCategory()
    }
-
+    fun insertCart(cart: Cart){
+        cartRepository.insert(cart)
+    }
 
 }

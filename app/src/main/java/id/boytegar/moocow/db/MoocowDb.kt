@@ -5,8 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import id.boytegar.moocow.db.dao.DaoCart
 import id.boytegar.moocow.db.dao.DaoCategory
 import id.boytegar.moocow.db.dao.DaoMenuItem
+import id.boytegar.moocow.db.dao.DaoTransactions
 import id.boytegar.moocow.db.entity.Cart
 import id.boytegar.moocow.db.entity.Category
 import id.boytegar.moocow.db.entity.MenuItem
@@ -17,6 +19,8 @@ abstract class MoocowDb: RoomDatabase() {
 
     abstract fun DaoCategory(): DaoCategory
     abstract fun DaoMenuItem(): DaoMenuItem
+    abstract fun DaoCart(): DaoCart
+    abstract fun DaoTransactions(): DaoTransactions
 
     companion object {
         private var instance: MoocowDb? = null

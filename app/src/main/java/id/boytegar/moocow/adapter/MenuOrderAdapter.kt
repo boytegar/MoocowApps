@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import id.boytegar.moocow.db.entity.MenuItem
+import id.boytegar.moocow.helper.HelperFun
 import id.boytegar.moocow.helper.MenuCallback
 import kotlinx.android.synthetic.main.list_menu_order.view.*
 import kotlinx.android.synthetic.main.list_menu_settings.view.*
@@ -43,29 +44,25 @@ class MenuOrderAdapter(
     inner class PersonViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val holder = view
         fun bind(profile: MenuItem) {
-            val rupiahFormat = NumberFormat.getInstance(Locale.GERMANY)
-            val df = DecimalFormat("#.##")
 
             holder.txt_name.text = profile.name
-            val price = df.format(profile.price)
-            val price_discount = df.format(profile.price_discount)
-
+            val helper = HelperFun
             if(profile.discount == 1){
-                holder.txt_price.text = "Rp. "+rupiahFormat.format(price_discount.toDouble()).toString()
-                holder.txt_price_discount.text = "Rp. "+rupiahFormat.format(price.toDouble()).toString()
+                holder.txt_price.text = "Rp. " + helper.rupiahformat(profile.price_discount)
+                holder.txt_price_discount.text = "Rp. " + helper.rupiahformat(profile.price)
                 holder.txt_price_discount.paintFlags = holder.txt_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 holder.ic_discount.visibility = View.VISIBLE
             }else{
-                holder.txt_price.text = "Rp. "+rupiahFormat.format(price.toDouble()).toString()
+                holder.txt_price.text = "Rp. " + helper.rupiahformat(profile.price)
                 holder.txt_price_discount.visibility = View.GONE
                 holder.ic_discount.visibility = View.GONE
             }
 
             holder.setOnClickListener {
-                onItemClick!!.invoke(profile)
+                onItemClick?.invoke(profile)
             }
             holder.btn_add.setOnClickListener {
-                onItemClick!!.invoke(profile)
+                onItemClick?.invoke(profile)
             }
 
         }

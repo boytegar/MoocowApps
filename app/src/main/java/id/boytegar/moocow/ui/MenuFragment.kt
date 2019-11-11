@@ -1,24 +1,29 @@
 package id.boytegar.moocow.ui
 
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
-import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import id.boytegar.moocow.R
-import kotlinx.android.synthetic.main.fragment_menu.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import id.boytegar.moocow.db.entity.Category
-import id.boytegar.moocow.viewmodel.MenuItemViewModel
-import id.boytegar.moocow.adapter.MenuOrderAdapter
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import id.boytegar.moocow.R
 import id.boytegar.moocow.adapter.CategoryAdapter
+import id.boytegar.moocow.adapter.MenuOrderAdapter
+import id.boytegar.moocow.viewmodel.MenuItemViewModel
+import kotlinx.android.synthetic.main.dialog_insert_cart.view.*
+import kotlinx.android.synthetic.main.fragment_menu.view.*
+import id.boytegar.moocow.helper.HelperFun
+import org.jetbrains.anko.doAsync
+import id.boytegar.moocow.db.entity.Cart
+import org.jetbrains.anko.uiThread
+
 class MenuFragment : Fragment() {
 
     lateinit var viewz: View
@@ -63,21 +68,19 @@ class MenuFragment : Fragment() {
                         menuItemViewModel.filterTextAll.value = "${a.id}"
                     }
                 }
-                Toast.makeText(activity!!, "CLICKED POS $it", Toast.LENGTH_SHORT).show()
+
             }
         })
         menuItemViewModel.getAllData().observe(this, Observer {
             val linearLayoutManager = LinearLayoutManager(activity)
             v.list_menu.layoutManager = linearLayoutManager
             v.list_menu.hasFixedSize()
-            val menuAdapter = MenuOrderAdapter(activity!!, R.layout.list_menu_settings)
+            val menuAdapter = MenuOrderAdapter(activity!!, R.layout.list_menu_order)
             menuAdapter.submitList(it)
             v.list_menu.adapter = menuAdapter
-            menuAdapter.onItemDelete = { menu ->
+            menuAdapter.onItemClick = { menu ->
                 // menuItemViewModel.deleteMenu(menu)
-            }
-            menuAdapter.onItemEdit = { menu ->
-                //showEditMenu(menu)
+                showDialogMenu(menu)
             }
         })
         viewz = v
@@ -101,7 +104,66 @@ class MenuFragment : Fragment() {
 
     }
 
+    fun showDialogMenu(menu: id.boytegar.moocow.db.entity.MenuItem) {
+        var numb = 0
+        var prices = 0.0
+        val view = layoutInflater.inflate(R.layout.dialog_insert_cart, null)
+        val dialog = BottomSheetDialog(activity!!)
+        val helperFun = HelperFun
 
+        view.txt_name.text = menu.name
+        view.txt_total.text =  "Rp. "+helperFun.rupiahformat(numb*prices)
+        view.edt_pcs_order.setText(numb.toString())
+        if(menu.discount == 1){
+            view.txt_price_discount.visibility = View.VISIBLE
+            view.txt_price_discount.text = "Rp. " + helperFun.rupiahformat(menu.price)
+            view.txt_price_discount.paintFlags = view.txt_price_discount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            view.txt_price.text = "Rp. "+helperFun.rupiahformat(menu.price_discount)
+            prices = menu.price_discount
+        }else{
+            view.txt_price_discount.visibility = View.GONE
+            view.txt_price.text = "Rp. "+helperFun.rupiahformat(menu.price)
+            prices = menu.price
+        }
+
+        view.btn_remove.setOnClickListener {
+            when (numb) {
+                0 -> {
+                    Toast.makeText(activity!!, "Sudah Tidak Bisa Dikurangi", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                else -> {
+                    numb--
+                    view.edt_pcs_order.setText("$numb")
+                    view.txt_total.text = "Rp. "+helperFun.rupiahformat(numb*prices)
+                }
+            }
+        }
+        view.btn_adds.setOnClickListener {
+            numb++
+            view.edt_pcs_order.setText("$numb")
+            view.txt_total.text = "Rp. "+helperFun.rupiahformat(numb*prices)
+        }
+
+        view.btn_save.setOnClickListener {
+            val cart = Cart()
+            cart.price = prices
+            cart.quantity = numb
+            cart.name = menu.name
+            cart.id_menu = menu.id!!
+            doAsync {
+                menuItemViewModel.insertCart(cart)
+                uiThread {
+                    dialog.dismiss()
+                }
+            }
+        }
+        view.btn_cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setContentView(view)
+        dialog.show()
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)

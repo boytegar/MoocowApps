@@ -1,6 +1,7 @@
 package id.boytegar.moocow.adapter
 
 import android.content.Context
+import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,12 +9,8 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import id.boytegar.moocow.db.entity.MenuItem
 import id.boytegar.moocow.helper.MenuCallback
+import id.boytegar.moocow.helper.HelperFun
 import kotlinx.android.synthetic.main.list_menu_settings.view.*
-import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
-import java.text.DecimalFormat
-import java.text.NumberFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MenuAdapter(
@@ -40,20 +37,16 @@ class MenuAdapter(
     inner class PersonViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val holder = view
         fun bind(profile: MenuItem) {
-            val rupiahFormat = NumberFormat.getInstance(Locale.GERMANY)
-            val df = DecimalFormat("#.##")
-
+            val helper = HelperFun
             holder.txt_name.text = profile.name
-            val price = df.format(profile.price)
-            val price_discount = df.format(profile.price_discount)
 
-                if(profile.discount == 1){
-                holder.txt_price.text = "Rp. "+rupiahFormat.format(price_discount.toDouble()).toString()
-                holder.txt_price_discount.text = "Rp. "+rupiahFormat.format(price.toDouble()).toString()
+            if(profile.discount == 1){
+                holder.txt_price.text = "Rp. " + helper.rupiahformat(profile.price_discount)
+                holder.txt_price_discount.text = "Rp. " + helper.rupiahformat(profile.price)
                 holder.txt_price_discount.paintFlags = holder.txt_price_discount.paintFlags or STRIKE_THRU_TEXT_FLAG
                 holder.ic_discount.visibility = View.VISIBLE
             }else{
-                holder.txt_price.text = "Rp. "+rupiahFormat.format(price.toDouble()).toString()
+                holder.txt_price.text = "Rp. " + helper.rupiahformat(profile.price)
                 holder.txt_price_discount.visibility = View.GONE
                 holder.ic_discount.visibility = View.GONE
             }
