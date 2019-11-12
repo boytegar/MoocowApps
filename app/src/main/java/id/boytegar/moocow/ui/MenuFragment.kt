@@ -14,17 +14,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import id.boytegar.moocow.CartActivity
 import id.boytegar.moocow.R
 import id.boytegar.moocow.adapter.CategoryAdapter
 import id.boytegar.moocow.adapter.MenuOrderAdapter
+import id.boytegar.moocow.db.entity.Cart
+import id.boytegar.moocow.helper.HelperFun
 import id.boytegar.moocow.viewmodel.MenuItemViewModel
 import kotlinx.android.synthetic.main.dialog_insert_cart.view.*
 import kotlinx.android.synthetic.main.fragment_menu.view.*
-import id.boytegar.moocow.helper.HelperFun
 import org.jetbrains.anko.doAsync
-import id.boytegar.moocow.db.entity.Cart
 import org.jetbrains.anko.uiThread
-import id.boytegar.moocow.CartActivity
+
 class MenuFragment : Fragment() {
 
     lateinit var viewz: View
@@ -76,12 +77,16 @@ class MenuFragment : Fragment() {
             val linearLayoutManager = LinearLayoutManager(activity)
             v.list_menu.layoutManager = linearLayoutManager
             v.list_menu.hasFixedSize()
-            val menuAdapter = MenuOrderAdapter(activity!!, R.layout.list_menu_order)
+            val menuAdapter =
+                MenuOrderAdapter(activity!!, R.layout.list_menu_order, menuItemViewModel)
             menuAdapter.submitList(it)
             v.list_menu.adapter = menuAdapter
             menuAdapter.onItemClick = { menu ->
                 // menuItemViewModel.deleteMenu(menu)
                 showDialogMenu(menu)
+            }
+            menuAdapter.onCartClick = {cart ->
+                editMenuDialog(cart)
             }
         })
         menuItemViewModel.getCountCart().observe(this, Observer {
@@ -173,6 +178,55 @@ class MenuFragment : Fragment() {
         dialog.setContentView(view)
         dialog.show()
     }
+
+
+    fun editMenuDialog(cart: Cart) {
+
+        val view = layoutInflater.inflate(R.layout.dialog_insert_cart, null)
+        val dialog = BottomSheetDialog(activity!!)
+        val helperFun = HelperFun
+
+        view.txt_name.text = cart.name
+        var prices = cart.price
+        var numb = cart.quantity
+        view.txt_name.text = cart.name
+        view.txt_total.text = "Rp. " + helperFun.rupiahformat(numb * prices)
+        view.edt_pcs_order.setText(numb.toString())
+        view.txt_price_discount.visibility = View.GONE
+        view.txt_price.text = "Rp. " + helperFun.rupiahformat(cart.price)
+
+
+
+        view.btn_remove.setOnClickListener {
+            when (numb) {
+                0 -> {
+                    Toast.makeText(activity!!, "Sudah Tidak Bisa Dikurangi", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                else -> {
+                    numb--
+                    view.edt_pcs_order.setText("$numb")
+                    view.txt_total.text = "Rp. " + helperFun.rupiahformat(numb * prices)
+                }
+            }
+        }
+        view.btn_adds.setOnClickListener {
+            numb++
+            view.edt_pcs_order.setText("$numb")
+            view.txt_total.text = "Rp. " + helperFun.rupiahformat(numb * prices)
+        }
+
+        view.btn_save.setOnClickListener {
+
+        }
+        view.btn_cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setContentView(view)
+        dialog.show()
+    }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)

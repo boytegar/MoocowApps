@@ -36,14 +36,26 @@ class CartRepository(application: Application) {
 //        }
 //    }
 
-    fun getAllCategory(): LiveData<List<Cart>> {
+    fun getAllCart(): LiveData<List<Cart>> {
         list = cartDao.getListCart()
         return list
+    }
+
+    fun checkItemCart(id: Int):Boolean{
+        var b = cartDao.checkItemCart(id)
+        return b
+    }
+    fun getItemCartById(id: Int): Cart{
+        var b = cartDao.getItemCartById(id)
+        return b
     }
 
     fun getCount():LiveData<Int>{
         val data = cartDao.getCountCart()
         return data
+    }
+    fun updateById(id: Int, quantity: Int){
+        cartDao.updateById(id, quantity)
     }
 
 }

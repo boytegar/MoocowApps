@@ -98,5 +98,14 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
         val dats = cartRepository.getCount()
         return dats
     }
+    fun checkItemCart(id: Int):Boolean{
+        val b = cartRepository.checkItemCart(id)
+        return b
+    }
+
+    fun getItemCartById(id: Int):Cart{
+        val b = cartRepository.getItemCartById(id)
+        return b
+    }
 
 }

@@ -76,11 +76,11 @@ class AddMenuActivity : AppCompatActivity() {
 
     fun showCategory(it: List<Category>) {
         val list = ArrayList<String>()
-        list.add("pilih kategori")
+        list.add("Pilih kategori")
         for (i in it.indices){
             list.add(it[i].name)
         }
-        list.add("tambah kategori")
+        list.add("Tambah kategori")
 
         val areasAdapter =
             ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list)
@@ -88,7 +88,7 @@ class AddMenuActivity : AppCompatActivity() {
         spinner.adapter = areasAdapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                if(list[position] == "tambah kategori"){
+                if(list[position] == "Tambah kategori"){
                     showDialogInsertCategory()
                 }else if(list[position] != "pilih kategori"){
                     cat_id = it[position-1].id!!

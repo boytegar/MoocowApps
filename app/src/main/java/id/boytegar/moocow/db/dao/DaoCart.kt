@@ -20,6 +20,12 @@ interface DaoCart{
     fun  deleteById(id: Int)
     @Query("select count(*) from cart")
     fun  getCountCart(): LiveData<Int>
-//    @Query("update category set name=:name where id=:id ")
-//    fun updateById(id: Int, name: String)
+    @Query("select sum(quantity) from cart")
+    fun getTotalQuantity(): LiveData<Int>
+    @Query("select * from cart where id_menu=:id")
+    fun checkItemCart(id: Int):Boolean
+    @Query("select * from cart where id_menu=:id")
+    fun getItemCartById(id: Int): Cart
+    @Query("update cart set quantity=:quantity where id=:id ")
+    fun updateById(id: Int, quantity: Int)
 }
