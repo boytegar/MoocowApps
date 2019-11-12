@@ -1,6 +1,7 @@
 package id.boytegar.moocow.ui
 
 
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.text.Editable
@@ -23,7 +24,7 @@ import id.boytegar.moocow.helper.HelperFun
 import org.jetbrains.anko.doAsync
 import id.boytegar.moocow.db.entity.Cart
 import org.jetbrains.anko.uiThread
-
+import id.boytegar.moocow.CartActivity
 class MenuFragment : Fragment() {
 
     lateinit var viewz: View
@@ -83,6 +84,9 @@ class MenuFragment : Fragment() {
                 showDialogMenu(menu)
             }
         })
+        menuItemViewModel.getCountCart().observe(this, Observer {
+            v.txt_count.text = it.toString()
+        })
         viewz = v
         return v
     }
@@ -100,6 +104,11 @@ class MenuFragment : Fragment() {
                 menuItemViewModel.filterTextAll.value = "%$editable%"
             }
         })
+
+        view.fab_cart.setOnClickListener {
+            val intent = Intent(activity!!, CartActivity::class.java)
+            startActivity(intent)
+        }
 
 
     }

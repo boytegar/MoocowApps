@@ -70,7 +70,6 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
 
 
     fun checkNumeric(str: String): Boolean{
-
         var numeric = str.matches("-?\\d+(\\.\\d+)?".toRegex())
         numeric = numeric
         return numeric
@@ -94,6 +93,10 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
    }
     fun insertCart(cart: Cart){
         cartRepository.insert(cart)
+    }
+    fun getCountCart(): LiveData<Int>{
+        val dats = cartRepository.getCount()
+        return dats
     }
 
 }

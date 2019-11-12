@@ -13,22 +13,15 @@ class CartRepository(application: Application) {
 
 
     fun insert(cart: Cart) {
-
             cartDao.insert(cart)
-
-
     }
 
     fun update(cart: Cart) {
-        Async {
             cartDao.update(cart)
-        }
     }
 
     fun delete(cart: Cart) {
-        Async {
             cartDao.delete(cart)
-        }
     }
 
     fun deleteById(id: Int) {
@@ -46,6 +39,11 @@ class CartRepository(application: Application) {
     fun getAllCategory(): LiveData<List<Cart>> {
         list = cartDao.getListCart()
         return list
+    }
+
+    fun getCount():LiveData<Int>{
+        val data = cartDao.getCountCart()
+        return data
     }
 
 }

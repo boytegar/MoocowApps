@@ -18,6 +18,8 @@ interface DaoCart{
     fun getListCart(): LiveData<List<Cart>>
     @Query("delete from cart where id=:id")
     fun  deleteById(id: Int)
+    @Query("select count(*) from cart")
+    fun  getCountCart(): LiveData<Int>
 //    @Query("update category set name=:name where id=:id ")
 //    fun updateById(id: Int, name: String)
 }
