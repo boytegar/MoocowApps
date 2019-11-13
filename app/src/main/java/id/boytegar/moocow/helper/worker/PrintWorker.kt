@@ -1,45 +1,78 @@
 package id.boytegar.moocow.helper.worker
 
-import android.R
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothSocket
 import android.content.Context
-import android.os.Build
+import android.graphics.BitmapFactory
 import android.util.Log
-import androidx.core.app.NotificationCompat
 import androidx.work.Data
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import id.boytegar.moocow.helper.PrinterCommands
-import java.io.IOException
-import android.bluetooth.BluetoothSocket
-import java.io.OutputStream
-import android.graphics.BitmapFactory
-import android.graphics.Bitmap
 import id.boytegar.moocow.helper.Utils
-import androidx.core.app.ActivityCompat.startActivityForResult
-import android.content.Intent
-import androidx.lifecycle.ViewModelProviders
-import id.boytegar.moocow.viewmodel.MenuItemViewModel
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import java.util.*
 
 
 class PrintWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
     lateinit var btsocket: BluetoothSocket
     lateinit var outputStream: OutputStream
+    // android built in classes for bluetooth operations
+    var mBluetoothAdapter: BluetoothAdapter? = null
+    lateinit var mmDevice: BluetoothDevice
+    var mmInputStream: InputStream? = null
     //BT SOCKET BELUM
-    private val SPP_UUID = UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66")
+    // private val SPP_UUID = UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66")
     var context = ctx
+
 
     override fun doWork(): Result {
         val taskData = inputData
-        val title = taskData.getString("title")
-        val desc = taskData.getString("desc")
+        val bt_name = taskData.getString("bt_name")!!
       //  btsocket = taskData.get
         val outputData = Data.Builder().putString("job", "Jobs Finished").build()
-
+        printdata(bt_name)
         return Result.success(outputData)
     }
+
+    fun printdata(btName: String) {
+        try {
+            val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+            val pairedDevices = mBluetoothAdapter.bondedDevices
+            if (pairedDevices.size > 0) {
+                for (device in pairedDevices) {
+                    Log.e("BT_NAME", device.name)
+                    if (device.getName() == btName) {
+                        mmDevice = device
+                        openBT()
+                        break
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
+    fun openBT() {
+        try {
+            val uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
+            btsocket = mmDevice!!.createRfcommSocketToServiceRecord(uuid)
+            btsocket.connect()
+            outputStream = btsocket.getOutputStream()
+            mmInputStream = btsocket.getInputStream()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            printBill()
+        }
+
+    }
+
 
     protected fun printBill() {
 

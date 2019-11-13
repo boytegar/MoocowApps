@@ -86,7 +86,7 @@ class MenuFragment : Fragment() {
                 showDialogMenu(menu)
             }
             menuAdapter.onCartClick = {cart ->
-                editMenuDialog(cart)
+                editMenuDialog(cart, menuAdapter)
             }
         })
         menuItemViewModel.getCountCart().observe(this, Observer {
@@ -180,7 +180,10 @@ class MenuFragment : Fragment() {
     }
 
 
-    fun editMenuDialog(cart: Cart) {
+    fun editMenuDialog(
+        cart: Cart,
+        menuAdapter: MenuOrderAdapter
+    ) {
 
         val view = layoutInflater.inflate(R.layout.dialog_insert_cart, null)
         val dialog = BottomSheetDialog(activity!!)
@@ -217,7 +220,10 @@ class MenuFragment : Fragment() {
         }
 
         view.btn_save.setOnClickListener {
-
+            val quan = view.edt_pcs_order.text.toString()
+            menuItemViewModel.updateQuantityById(cart.id!!,quan.toInt() )
+            menuAdapter.notifyDataSetChanged()
+            dialog.dismiss()
         }
         view.btn_cancel.setOnClickListener {
             dialog.dismiss()

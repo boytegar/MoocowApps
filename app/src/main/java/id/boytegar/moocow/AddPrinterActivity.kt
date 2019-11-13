@@ -17,6 +17,7 @@ import kotlin.collections.ArrayList
 import java.nio.file.Files.size
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import id.boytegar.moocow.helper.SharedData
 import id.boytegar.moocow.viewmodel.MenuItemViewModel
 import org.jetbrains.anko.toast
 
@@ -30,7 +31,9 @@ class AddPrinterActivity : AppCompatActivity() {
     lateinit var mbtSocket : BluetoothSocket
     //   lateinit var newDeviceAdapter: ArrayAdapter<String>
     var list_data = ArrayList<String>()
+    var list_data_paired = ArrayList<String>()
     var list_blue= ArrayList<BluetoothDevice>()
+    var list_blue_paired= ArrayList<BluetoothDevice>()
     var bAdapter = BluetoothAdapter.getDefaultAdapter()
     val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
     lateinit var menuItemViewModel: MenuItemViewModel
@@ -44,6 +47,7 @@ class AddPrinterActivity : AppCompatActivity() {
                 startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), 1)
                 registerReceiver(mReceiver!!, filter)
                 bAdapter.startDiscovery()
+                showlistPaired()
                 //   getBluetoothPairedDevices(list_data)
             } else {
                 bAdapter.disable()
@@ -58,6 +62,25 @@ class AddPrinterActivity : AppCompatActivity() {
 
     }
 
+
+    fun showlistPaired(){
+        val   mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        val pairedDevices = mBluetoothAdapter.bondedDevices
+        if (pairedDevices.size > 0) {
+            for (device in pairedDevices) {
+                list_data_paired.add(device.name)
+                list_blue_paired.add(device)
+                list_bluetooth_paired.adapter = ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_list_item_1, list_data_paired
+                )
+                list_bluetooth_paired.setOnItemClickListener { adapterView, view, i, l ->
+                    val name = list_blue_paired[i].name
+                    SharedData.setKeyString(this,"bt_name",name)
+                }
+            }
+        }
+    }
 
     override fun onResume() {
         super.onResume()
@@ -82,12 +105,9 @@ class AddPrinterActivity : AppCompatActivity() {
     private val mReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val action = intent.action
-
-            Log.e("MASUK LIST ", "")
             if (BluetoothDevice.ACTION_FOUND == action) {
                 val device =
                     intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-                Log.e("DEVICE LIST ", "${device!!.name} ++ ${device!!.address}")
                 list_data.add(device!!.name + "\n" + device.address)
                 list_blue.add(device)
                 list_bluetooth.adapter = ArrayAdapter<String>(
@@ -97,11 +117,11 @@ class AddPrinterActivity : AppCompatActivity() {
                 list_bluetooth.setOnItemClickListener { adapterView, view, i, l ->
                     menuItemViewModel.b_device.value = list_blue[i]
                     val bond = createBond(list_blue[i])
-                    val gotuuid = list_blue[i]
-                        .fetchUuidsWithSdp()
-                    val uuid =  list_blue[i].getUuids()[0]
-                        .getUuid()
-                    mbtSocket =  list_blue[i].createRfcommSocketToServiceRecord(uuid)
+//                    val gotuuid = list_blue[i]
+//                        .fetchUuidsWithSdp()
+//                    val uuid =  list_blue[i].getUuids()[0]
+//                        .getUuid()
+//                    mbtSocket =  list_blue[i].createRfcommSocketToServiceRecord(uuid)
 
                     if(bond){
                         toast("PAIRED")

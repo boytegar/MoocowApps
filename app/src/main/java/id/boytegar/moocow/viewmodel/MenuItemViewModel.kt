@@ -107,5 +107,8 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
         val b = cartRepository.getItemCartById(id)
         return b
     }
+    fun updateQuantityById(id: Int, quantity: Int){
+     cartRepository.updateById(id, quantity)
+    }
 
 }

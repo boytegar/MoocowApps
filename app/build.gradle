@@ -49,4 +49,5 @@ dependencies {
     implementation "androidx.paging:paging-runtime:2.1.0"
     implementation 'org.jetbrains.anko:anko-common:0.10.8'
     implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.opencsv:opencsv:5.0'
 }

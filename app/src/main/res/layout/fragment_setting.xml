@@ -30,40 +30,135 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:weightSum="10"
             android:orientation="horizontal">
 
-            <Button
+            <androidx.cardview.widget.CardView
                 android:id="@+id/btn_menu"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_margin="@dimen/_5sdp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Menu" />
+                android:layout_weight="5"
+                app:cardCornerRadius="@dimen/_10sdp"
+                >
+                <LinearLayout
+                    android:padding="@dimen/_10sdp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/btn_category"
-                android:layout_width="wrap_content"
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_menu_new" />
+
+                    <TextView
+                        android:gravity="center"
+                        android:textSize="@dimen/_14ssp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:text="Menu" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_toko"
+                android:layout_width="0dp"
+                android:layout_margin="@dimen/_5sdp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Category" />
+                android:layout_weight="5"
+                app:cardCornerRadius="@dimen/_10sdp"
+                >
+                <LinearLayout
+                    android:padding="@dimen/_10sdp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_toko" />
+
+                    <TextView
+                        android:gravity="center"
+                        android:textSize="@dimen/_14ssp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:text="Toko" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
         <LinearLayout
+            android:weightSum="10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_add_device"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_device"
+                android:layout_width="0dp"
+                android:layout_margin="@dimen/_5sdp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Add Device" />
+                android:layout_weight="5"
+                app:cardCornerRadius="@dimen/_10sdp"
+                >
+                <LinearLayout
+                    android:padding="@dimen/_10sdp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <Button
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_device" />
+
+                    <TextView
+                        android:gravity="center"
+                        android:textSize="@dimen/_14ssp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:text="Add Device" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:id="@+id/btn_report"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_margin="@dimen/_5sdp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Report" />
+                android:layout_weight="5"
+                app:cardCornerRadius="@dimen/_10sdp"
+                >
+                <LinearLayout
+                    android:padding="@dimen/_10sdp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_report" />
+
+                    <TextView
+                        android:gravity="center"
+                        android:textSize="@dimen/_14ssp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:text="Create Report" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

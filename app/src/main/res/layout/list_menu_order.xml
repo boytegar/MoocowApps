@@ -73,6 +73,7 @@
                 android:paddingLeft="@dimen/_10sdp"
                 android:background="@drawable/bg_cat_selected"
                 android:layout_width="wrap_content"
+                android:visibility="gone"
                 android:layout_height="wrap_content">
                 <ImageView
                     app:srcCompat="@drawable/ic_add_black"

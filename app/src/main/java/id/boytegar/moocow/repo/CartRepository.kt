@@ -55,7 +55,9 @@ class CartRepository(application: Application) {
         return data
     }
     fun updateById(id: Int, quantity: Int){
-        cartDao.updateById(id, quantity)
+        Async{
+            cartDao.updateById(id, quantity)
+        }
     }
 
 }

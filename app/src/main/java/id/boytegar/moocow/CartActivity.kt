@@ -31,14 +31,7 @@ class CartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cart)
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
 
-        val compressionWork = OneTimeWorkRequest.Builder(PrintWorker::class.java)
-        val data = Data.Builder()
-//Add parameter in Data class. just like bundle. You can also add Boolean and Number in parameter.
-        data.putString("file_path", "put_file_path_here")
-//Set Input Data
-        compressionWork.setInputData(data.build())
-//enque worker
-        WorkManager.getInstance().enqueue(compressionWork.build())
+
 //        val gotuuid = btDevices.getItem(position)
 //            .fetchUuidsWithSdp()
 //        val uuid = btDevices.getItem(position).getUuids()[0]

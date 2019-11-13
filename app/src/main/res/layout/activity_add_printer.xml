@@ -37,13 +37,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
+<LinearLayout
+    android:padding="@dimen/_5sdp"
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/_5sdp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="0dp">
+    <TextView
+        android:text="List Bluetooth Paired"
+        android:textSize="@dimen/_14ssp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <ListView
+        android:id="@+id/list_bluetooth_paired"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <TextView
+        android:text="List Bluetooth Unpaired"
+        android:textSize="@dimen/_14ssp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <ListView
         android:id="@+id/list_bluetooth"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        android:layout_height="wrap_content"
+        />
+</LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
