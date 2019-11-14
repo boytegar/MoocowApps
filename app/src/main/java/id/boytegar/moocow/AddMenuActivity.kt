@@ -90,7 +90,7 @@ class AddMenuActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if(list[position] == "Tambah kategori"){
                     showDialogInsertCategory()
-                }else if(list[position] != "pilih kategori"){
+                }else if(list[position] != "Pilih kategori"){
                     cat_id = it[position-1].id!!
                 }
             }

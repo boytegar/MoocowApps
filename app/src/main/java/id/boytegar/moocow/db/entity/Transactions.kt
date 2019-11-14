@@ -16,9 +16,8 @@ class Transactions() {
     var time = ""
     var date = ""
     var total_price = 0.0
-    var total_cash = 0.0
-    var total_change = 0.0
-    var status = ""
+    var tax = 0.0
+    var status = 1
     @TypeConverters(DataConverter::class)
     var menu: List<Cart> = listOf()
 
@@ -28,9 +27,8 @@ class Transactions() {
         time: String,
         date: String,
         total_price: Double,
-        total_cash: Double,
-        total_change: Double,
-        status: String,
+        tax: Double,
+        status: Int,
         menu: List<Cart>
         ) : this() {
         this.name_cashier = name_cashier
@@ -38,8 +36,7 @@ class Transactions() {
         this.time = time
         this.date = date
         this.total_price = total_price
-        this.total_cash = total_cash
-        this.total_change = total_change
+        this.tax = tax
         this.status = status
         this.menu = menu
     }

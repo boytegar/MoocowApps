@@ -22,14 +22,7 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
     val menuRepository  = MenuRepository(application)
     var cartRepository = CartRepository(application)
     var filterTextAll = MutableLiveData<String>()
-    var b_device = MutableLiveData<BluetoothDevice>()
-//    init {
-//        val factory: DataSource.Factory<Int, MenuItem> = menuRepository.getAllUser()
-//
-//        val pagedListBuilder: LivePagedListBuilder<Int, MenuItem> = LivePagedListBuilder(factory,
-//            20)
-//        personsLiveData = pagedListBuilder.build()
-//    }
+
 
     fun getAllData(): LiveData<PagedList<MenuItem>> {
         var personsLiveData: LiveData<PagedList<MenuItem>>

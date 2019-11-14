@@ -63,8 +63,8 @@ class PrintWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) 
             val uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
             btsocket = mmDevice!!.createRfcommSocketToServiceRecord(uuid)
             btsocket.connect()
-            outputStream = btsocket.getOutputStream()
-            mmInputStream = btsocket.getInputStream()
+            outputStream = btsocket.outputStream
+            mmInputStream = btsocket.inputStream
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
@@ -108,6 +108,10 @@ class PrintWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) 
             } catch (e: IOException) {
                 e.printStackTrace()
             }
+        finally {
+            btsocket.close()
+            outputStream.close()
+        }
     }
 
     private fun printCustom(msg: String, size: Int, align: Int) {

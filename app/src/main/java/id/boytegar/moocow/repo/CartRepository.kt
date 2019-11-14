@@ -29,7 +29,11 @@ class CartRepository(application: Application) {
             cartDao.deleteById(id)
         }
     }
-
+    fun deleteAll(){
+        Async{
+            cartDao.deleteAll()
+        }
+    }
 //    fun updateById(id: Int, name: String, email: String){
 //        Async{
 //            dataImageDao.updateById(id, name, email)
