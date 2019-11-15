@@ -17,7 +17,7 @@ interface DaoTransactions{
     fun deleteAll()
     @Query("select * from transactions where status=:status")
     fun getListTransactionsByStatus(status: Int): DataSource.Factory<Int, Transactions>
-    @Query("select * from transactions")
+    @Query("select * from transactions order by id desc")
     fun getAllTransactions(): DataSource.Factory<Int, Transactions>
     @Query("delete from transactions where id=:id")
     fun  deleteById(id: Int)

@@ -2,24 +2,25 @@ package id.boytegar.moocow
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import id.boytegar.moocow.adapter.MenuAdapter
 import id.boytegar.moocow.db.entity.Category
 import id.boytegar.moocow.db.entity.MenuItem
 import id.boytegar.moocow.viewmodel.MenuItemViewModel
 import kotlinx.android.synthetic.main.activity_menu.*
 import kotlinx.android.synthetic.main.dialog_edit_menu.view.*
 import org.jetbrains.anko.toast
-import android.text.Editable
-import android.text.TextWatcher
-import id.boytegar.moocow.adapter.MenuAdapter
 
 
 class MenuActivity : AppCompatActivity() {
@@ -30,6 +31,10 @@ class MenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
         setSupportActionBar(toolbar3)
+        title = "Daftar Menu"
+        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true)
+        getSupportActionBar()!!.setDisplayShowHomeEnabled(true)
+        supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_navigate_back)
         menuItemViewModel = ViewModelProviders.of(this).get(MenuItemViewModel::class.java)
 
         fab.setOnClickListener {
@@ -48,7 +53,20 @@ class MenuActivity : AppCompatActivity() {
             menuAdapter.submitList(it)
             list_menu.adapter = menuAdapter
             menuAdapter.onItemDelete = { menu ->
-                menuItemViewModel.deleteMenu(menu)
+                val builder = AlertDialog.Builder(this)
+                builder.setCancelable(true)
+                builder.setTitle("Mau Menghapus Item Ini ?")
+                builder.setPositiveButton(
+                    "HAPUS"
+                ) { dialog, which ->
+                    menuItemViewModel.deleteMenu(menu)
+                    dialog.dismiss()
+                }
+                builder.setNegativeButton("JANGAN") { dialog, which ->
+                    dialog.dismiss()
+                }
+                builder.show()
+
             }
             menuAdapter.onItemEdit = { menu ->
                 showEditMenu(menu)
@@ -77,7 +95,7 @@ class MenuActivity : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.dialog_edit_menu, null)
         val dialog = BottomSheetDialog(this)
         view.edt_name.setText(it.name)
-        view.edt_keterangan.setText(it.desc)
+        view.edt_keterangan.setText(it.descipt)
         view.edt_price.setText(it.price.toInt().toString())
         view.edt_price_diskon.setText(it.price_discount.toInt().toString())
         if (it.discount == 1) {
@@ -109,7 +127,7 @@ class MenuActivity : AppCompatActivity() {
         view.spinner.adapter = areasAdapter
 
         view.spinner.setSelection(it.cat_id - 1)
-        view.btn_save.setOnClickListener {
+        view.btn_save.setOnClickListener { vi ->
 
             val name = view.edt_name.text.toString()
             val desc = view.edt_keterangan.text.toString()
@@ -124,7 +142,7 @@ class MenuActivity : AppCompatActivity() {
             if (view.radio_tidak.isChecked) {
                 avail = 0
             }
-            var cat_id = 0
+            var cat_id = it.cat_id
 
             view.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -141,13 +159,22 @@ class MenuActivity : AppCompatActivity() {
             val menuItem = MenuItem()
             menuItem.id = it.id
             menuItem.name = name
-            menuItem.desc = desc
+            menuItem.descipt = desc
             menuItem.price = price
             menuItem.price_discount = price_diskon
             menuItem.discount = diskon
             menuItem.avail = avail
             menuItem.cat_id = cat_id
-            menuItemViewModel.updateMenu(menuItem)
+            menuItemViewModel.updateMenu(
+                it.id!!,
+                name,
+                desc,
+                price,
+                price_diskon,
+                diskon,
+                avail,
+                cat_id
+            )
             dialog.dismiss()
         }
 
@@ -158,6 +185,11 @@ class MenuActivity : AppCompatActivity() {
 
         dialog.setContentView(view)
         dialog.show()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
     }
 
     fun checkText(view: View): Boolean {

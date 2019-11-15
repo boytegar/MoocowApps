@@ -30,6 +30,8 @@ class MenuFragment : Fragment() {
 
     lateinit var viewz: View
     lateinit var menuItemViewModel: MenuItemViewModel
+    lateinit var menuAdapter: MenuOrderAdapter
+    var count = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -77,7 +79,7 @@ class MenuFragment : Fragment() {
             val linearLayoutManager = LinearLayoutManager(activity)
             v.list_menu.layoutManager = linearLayoutManager
             v.list_menu.hasFixedSize()
-            val menuAdapter =
+             menuAdapter =
                 MenuOrderAdapter(activity!!, R.layout.list_menu_order, menuItemViewModel)
             menuAdapter.submitList(it)
             v.list_menu.adapter = menuAdapter
@@ -90,6 +92,7 @@ class MenuFragment : Fragment() {
             }
         })
         menuItemViewModel.getCountCart().observe(this, Observer {
+            count = it
             v.txt_count.text = it.toString()
         })
         viewz = v
@@ -111,8 +114,14 @@ class MenuFragment : Fragment() {
         })
 
         view.fab_cart.setOnClickListener {
-            val intent = Intent(activity!!, CartActivity::class.java)
-            startActivity(intent)
+            if (count==0){
+                Toast.makeText(activity!!, "Belum Ada Menu Yang Di Order", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                val intent = Intent(activity!!, CartActivity::class.java)
+                startActivity(intent)
+            }
+
         }
 
 
@@ -139,6 +148,26 @@ class MenuFragment : Fragment() {
             view.txt_price.text = "Rp. "+helperFun.rupiahformat(menu.price)
             prices = menu.price
         }
+
+        view.edt_pcs_order.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                if(p0.isNullOrEmpty()){
+                    view.edt_pcs_order.setText("0")
+                }else{
+                    numb = p0.toString().toInt()
+                    view.txt_total.text = "Rp. "+helperFun.rupiahformat(numb*prices)
+                }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
 
         view.btn_remove.setOnClickListener {
             when (numb) {
@@ -168,6 +197,7 @@ class MenuFragment : Fragment() {
             doAsync {
                 menuItemViewModel.insertCart(cart)
                 uiThread {
+                    menuAdapter.notifyDataSetChanged()
                     dialog.dismiss()
                 }
             }

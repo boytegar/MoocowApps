@@ -34,6 +34,9 @@ class AddMenuActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_menu)
         setSupportActionBar(toolbar)
         title = "Tambah Menu Baru"
+        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true)
+        getSupportActionBar()!!.setDisplayShowHomeEnabled(true)
+        supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_navigate_back)
         menuItemViewModel = ViewModelProviders.of(this).get(MenuItemViewModel::class.java)
 
         menuItemViewModel.getListCategory().observe(this, Observer {
@@ -72,6 +75,11 @@ class AddMenuActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
     }
 
     fun showCategory(it: List<Category>) {

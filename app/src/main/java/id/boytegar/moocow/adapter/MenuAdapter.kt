@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import id.boytegar.moocow.db.entity.MenuItem
-import id.boytegar.moocow.helper.MenuCallback
+import id.boytegar.moocow.helper.callback.MenuCallback
 import id.boytegar.moocow.helper.HelperFun
 import kotlinx.android.synthetic.main.list_menu_settings.view.*
 

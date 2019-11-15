@@ -60,6 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/discount_text"
                     android:text="TextView" />
             </LinearLayout>
 
@@ -68,13 +69,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_10sdp"
-                app:srcCompat="@drawable/ic_edit" />
+                app:srcCompat="@drawable/ic_edit_new" />
 
             <ImageView
                 android:id="@+id/btn_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:layout_marginRight="@dimen/_2sdp"
                 app:srcCompat="@drawable/ic_delete" />
         </LinearLayout>
     </LinearLayout>

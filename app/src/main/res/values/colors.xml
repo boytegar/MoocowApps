@@ -2,10 +2,11 @@
 <resources>
     <color name="colorPrimary">#f4c20d</color>
     <color name="colorPrimaryDark">#f4c20d</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#3cba54</color>
     <color name="greenPrimary">#3cba54</color>
     <color name="yellowPrimary">#f4c20d</color>
     <color name="redPrimary">#db3236</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="discount_text">#66000000</color>
 </resources>

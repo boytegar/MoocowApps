@@ -1,4 +1,4 @@
-package id.boytegar.moocow.helper
+package id.boytegar.moocow.helper.callback
 
 import androidx.recyclerview.widget.DiffUtil
 import id.boytegar.moocow.db.entity.MenuItem

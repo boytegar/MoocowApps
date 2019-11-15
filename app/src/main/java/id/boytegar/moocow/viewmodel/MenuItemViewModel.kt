@@ -1,7 +1,6 @@
 package id.boytegar.moocow.viewmodel
 
 import android.app.Application
-import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -71,8 +70,16 @@ class MenuItemViewModel (application: Application): AndroidViewModel(application
     fun insertMenu(menuItem: MenuItem){
         menuRepository.insert(menuItem)
     }
-    fun updateMenu(menuItem: MenuItem){
-        menuRepository.update(menuItem)
+    fun updateMenu(id: Int,
+        name: String,
+        desc: String,
+        price: Double,
+        price_diskon: Double,
+        diskon: Int,
+        avail: Int,
+        catId: Int
+    ){
+        menuRepository.update(id, name, desc, price, price_diskon, diskon, avail, catId)
     }
     fun deleteMenu(menuItem: MenuItem){
         menuRepository.delete(menuItem)

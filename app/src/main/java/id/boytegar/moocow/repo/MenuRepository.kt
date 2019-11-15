@@ -1,7 +1,6 @@
 package id.boytegar.moocow.repo
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import id.boytegar.moocow.db.MoocowDb
 import id.boytegar.moocow.db.entity.MenuItem
@@ -19,9 +18,17 @@ class MenuRepository(application: Application) {
 
     }
 
-    fun update(menuItem: MenuItem) {
+    fun update(id: Int,
+        name: String,
+        desc: String,
+        price: Double,
+        priceDiskon: Double,
+        diskon: Int,
+        avail: Int,
+        catId: Int
+    ) {
         Async {
-            menuDao.update(menuItem)
+            menuDao.updateMenuItemById(id,name, desc, price, priceDiskon, diskon, avail, catId)
         }
     }
 

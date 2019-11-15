@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import id.boytegar.moocow.db.entity.Cart
 import id.boytegar.moocow.db.entity.MenuItem
 import id.boytegar.moocow.helper.HelperFun
-import id.boytegar.moocow.helper.MenuCallback
+import id.boytegar.moocow.helper.callback.MenuCallback
 import id.boytegar.moocow.viewmodel.MenuItemViewModel
 import kotlinx.android.synthetic.main.list_menu_order.view.*
 import kotlinx.android.synthetic.main.list_menu_settings.view.ic_discount

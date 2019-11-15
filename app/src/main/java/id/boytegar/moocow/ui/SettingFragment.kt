@@ -18,6 +18,7 @@ import id.boytegar.moocow.MenuActivity
 import id.boytegar.moocow.helper.worker.PrintWorker
 import android.bluetooth.BluetoothAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import id.boytegar.moocow.helper.SharedData
 
 /**
@@ -25,12 +26,19 @@ import id.boytegar.moocow.helper.SharedData
  */
 class SettingFragment : Fragment() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val v =  inflater.inflate(R.layout.fragment_setting, container, false)
+        (activity as AppCompatActivity).setSupportActionBar(v.toolbar)
+        v.toolbar.title = "Settings"
         v.btn_device.setOnClickListener {
             checkBluetooth()
         }

@@ -72,11 +72,11 @@
                />
             <EditText
                 android:id="@+id/edt_pcs_order"
-                android:layout_width="@dimen/_30sdp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingLeft="@dimen/_10sdp"
-                android:paddingRight="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_20sdp"
+                android:paddingRight="@dimen/_20sdp"
                 android:textSize="@dimen/_11ssp"
                 android:textStyle="bold"
                 />
@@ -125,19 +125,23 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:text="SAVE" />
-
-        <Button
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="@dimen/_10sdp"
+            android:background="@drawable/bg_cat_unselected"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginRight="@dimen/_10sdp"
             android:text="CANCEL" />
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_cat_selected"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:text="SAVE" />
+
     </LinearLayout>
 </LinearLayout>

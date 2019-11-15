@@ -36,12 +36,15 @@ class AddPrinterActivity : AppCompatActivity() {
     var list_blue_paired= ArrayList<BluetoothDevice>()
     var bAdapter = BluetoothAdapter.getDefaultAdapter()
     val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+    var name = ""
     lateinit var menuItemViewModel: MenuItemViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_printer)
         menuItemViewModel = ViewModelProviders.of(this).get(MenuItemViewModel::class.java)
-
+        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true)
+        getSupportActionBar()!!.setDisplayShowHomeEnabled(true)
+        supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_navigate_back)
         switch_bt.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
                 startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), 1)
@@ -59,24 +62,30 @@ class AddPrinterActivity : AppCompatActivity() {
         }
 
 
-
     }
 
 
     fun showlistPaired(){
+        name = SharedData.getKeyString(this, "bt_name")!!
         val   mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         val pairedDevices = mBluetoothAdapter.bondedDevices
         if (pairedDevices.size > 0) {
             for (device in pairedDevices) {
-                list_data_paired.add(device.name)
+                if(device.name == name){
+                    list_data_paired.add(device.name+" --- Selected")
+                }else{
+                    list_data_paired.add(device.name)
+                }
                 list_blue_paired.add(device)
-                list_bluetooth_paired.adapter = ArrayAdapter<String>(
+                val adapter = ArrayAdapter<String>(
                     this,
                     android.R.layout.simple_list_item_1, list_data_paired
                 )
+                list_bluetooth_paired.adapter = adapter
                 list_bluetooth_paired.setOnItemClickListener { adapterView, view, i, l ->
                     val name = list_blue_paired[i].name
                     SharedData.setKeyString(this,"bt_name",name)
+                    showlistPaired()
                 }
             }
         }
@@ -106,30 +115,28 @@ class AddPrinterActivity : AppCompatActivity() {
         override fun onReceive(context: Context, intent: Intent) {
             val action = intent.action
             if (BluetoothDevice.ACTION_FOUND == action) {
-                val device =
-                    intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
+                val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
                 list_data.add(device!!.name + "\n" + device.address)
                 list_blue.add(device)
-                list_bluetooth.adapter = ArrayAdapter<String>(
+                val adapter = ArrayAdapter<String>(
                     context,
                     android.R.layout.simple_list_item_1, list_data
                 )
+                list_bluetooth.adapter = adapter
                 list_bluetooth.setOnItemClickListener { adapterView, view, i, l ->
-                    menuItemViewModel.b_device.value = list_blue[i]
                     val bond = createBond(list_blue[i])
 //                    val gotuuid = list_blue[i]
 //                        .fetchUuidsWithSdp()
 //                    val uuid =  list_blue[i].getUuids()[0]
 //                        .getUuid()
 //                    mbtSocket =  list_blue[i].createRfcommSocketToServiceRecord(uuid)
-
                     if(bond){
                         toast("PAIRED")
+                        adapter.notifyDataSetChanged()
                     }else{
                         toast("NOT PAIRED")
                     }
                 }
-
             }
         }
     }
