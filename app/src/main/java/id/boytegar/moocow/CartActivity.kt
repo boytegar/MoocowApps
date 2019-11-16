@@ -99,6 +99,7 @@ class CartActivity : AppCompatActivity() {
         trans.total_price = total
         trans.name_buyer = buyer
         trans.status = status
+        trans.name_cashier = "Admin"
         trans.menu = list
         if(edt_buyer.text.isEmpty()){
             edt_buyer.error = "Wajib Di Isi"

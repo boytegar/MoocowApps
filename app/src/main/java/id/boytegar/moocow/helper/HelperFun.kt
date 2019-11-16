@@ -1,12 +1,12 @@
 package id.boytegar.moocow.helper
 
-import java.text.DecimalFormat
-import java.text.NumberFormat
-import java.util.*
-import android.graphics.Bitmap
 import com.google.gson.Gson
 import id.boytegar.moocow.db.entity.Transactions
-import kotlin.collections.ArrayList
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class HelperFun(){
@@ -18,12 +18,20 @@ class HelperFun(){
             val formatter = rupiahFormat.format(price_).toString()
             return formatter
         }
-        fun serializeToJson(bmp: ArrayList<Transactions>): String {
+        fun serializeToJsonTransactions(bmp: List<Transactions>): String {
             val gson = Gson()
             return gson.toJson(bmp)
         }
 
-        // Deserialize to single object.
+        fun stringToDate(data: String): Date {
+            val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+            val date: Date = format.parse(data)
+            return date
+        }
+        fun dateToString(date: Date): String{
+            val format = SimpleDateFormat("dd_MM_yyyy")
+            return format.format(date)
+        }
 
     }
 }

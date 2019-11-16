@@ -42,6 +42,8 @@ class AddPrinterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_printer)
         menuItemViewModel = ViewModelProviders.of(this).get(MenuItemViewModel::class.java)
+        setSupportActionBar(toolbar2)
+        title = "Select Device"
         getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true)
         getSupportActionBar()!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_navigate_back)
@@ -66,6 +68,8 @@ class AddPrinterActivity : AppCompatActivity() {
 
 
     fun showlistPaired(){
+        list_data_paired.clear()
+        list_blue_paired.clear()
         name = SharedData.getKeyString(this, "bt_name")!!
         val   mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         val pairedDevices = mBluetoothAdapter.bondedDevices

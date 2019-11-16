@@ -21,8 +21,8 @@ class PrintWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) 
     lateinit var btsocket: BluetoothSocket
     lateinit var outputStream: OutputStream
     // android built in classes for bluetooth operations
-    var mBluetoothAdapter: BluetoothAdapter? = null
     lateinit var mmDevice: BluetoothDevice
+    val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
     var mmInputStream: InputStream? = null
     //BT SOCKET BELUM
     // private val SPP_UUID = UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66")
@@ -33,50 +33,40 @@ class PrintWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) 
         val taskData = inputData
         val bt_name = taskData.getString("bt_name")!!
       //  btsocket = taskData.get
-        val outputData = Data.Builder().putString("job", "Jobs Finished").build()
-        printdata(bt_name)
-        return Result.success(outputData)
-    }
-
-    fun printdata(btName: String) {
-        try {
-            val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-            val pairedDevices = mBluetoothAdapter.bondedDevices
-            if (pairedDevices.size > 0) {
-                for (device in pairedDevices) {
-                    Log.e("BT_NAME", device.name)
-                    if (device.getName() == btName) {
-                        mmDevice = device
-                        openBT()
-                        break
-                    }
+        val pairedDevices = mBluetoothAdapter.bondedDevices
+        if (pairedDevices.size > 0) {
+            for (device in pairedDevices) {
+                Log.e("BT_NAME", device.name)
+                if (device.getName() == bt_name) {
+                    mmDevice = device
+                    break
                 }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
 
-    }
-
-    fun openBT() {
         try {
             val uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
             btsocket = mmDevice!!.createRfcommSocketToServiceRecord(uuid)
             btsocket.connect()
             outputStream = btsocket.outputStream
             mmInputStream = btsocket.inputStream
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
             printBill()
+            val outputData = Data.Builder().putString("job", "Print Finished").build()
+            return Result.success(outputData)
+        } catch (e: java.lang.Exception) {
+            val outputData = Data.Builder().putString("job", "Print Failed").build()
+            return Result.failure(outputData)
         }
+
 
     }
 
 
     protected fun printBill() {
 
-            val opstream = btsocket.outputStream
+        Log.e("MASUK PRINT GAN", "MASUK PRINT")
+
+        val opstream = btsocket.outputStream
             outputStream = opstream!!
 
      //   btsocket = DeviceList.getSocket();

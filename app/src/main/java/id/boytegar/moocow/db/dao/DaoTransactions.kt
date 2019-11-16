@@ -23,6 +23,8 @@ interface DaoTransactions{
     fun  deleteById(id: Int)
     @Query("select * from transactions where id=:id")
     fun getTransactionById(id: Int): Transactions
-//    @Query("update category set name=:name where id=:id ")
-//    fun updateById(id: Int, name: String)
+    @Query("select * from transactions where date=:date")
+    fun getTransactionByDate(date: String): List<Transactions>
+    @Query("select * from transactions where(date BETWEEN :fromDate AND :toDate)")
+    fun getTransactionByDateToDate(fromDate: String, toDate: String): List<Transactions>
 }

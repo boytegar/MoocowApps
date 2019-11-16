@@ -175,7 +175,7 @@
                 android:layout_weight="5"
                 android:background="@drawable/bg_cat_selected"
                 android:text="@string/btn_done"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
         </LinearLayout>
     </LinearLayout>
 

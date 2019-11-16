@@ -48,4 +48,14 @@ class TransactionsRepository(application: Application) {
         val trans = transactionDao.getListTransactionsByStatus(status)
         return trans
     }
+
+    fun getTransactionByDate(date: String): List<Transactions>{
+        val data = transactionDao.getTransactionByDate(date)
+        return data
+    }
+
+    fun getTransactionByDateToDate(fromDate: String, toDate: String): List<Transactions>{
+        val data = transactionDao.getTransactionByDateToDate(fromDate, toDate)
+        return data
+    }
 }

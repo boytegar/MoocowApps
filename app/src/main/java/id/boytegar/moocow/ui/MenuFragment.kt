@@ -32,6 +32,7 @@ class MenuFragment : Fragment() {
     lateinit var menuItemViewModel: MenuItemViewModel
     lateinit var menuAdapter: MenuOrderAdapter
     var count = 0
+    var cart_numb = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -99,6 +100,14 @@ class MenuFragment : Fragment() {
         return v
     }
 
+    override fun onResume() {
+        if(cart_numb == 1){
+            cart_numb = 0
+            menuAdapter.notifyDataSetChanged()
+        }
+        super.onResume()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -119,6 +128,7 @@ class MenuFragment : Fragment() {
             }
             else{
                 val intent = Intent(activity!!, CartActivity::class.java)
+                cart_numb = 1
                 startActivity(intent)
             }
 

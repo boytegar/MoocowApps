@@ -41,6 +41,16 @@ class TransactionsViewModel (application: Application): AndroidViewModel(applica
         }
     }
 
+    fun getTransactionsByDate(date: String): List<Transactions>{
+        val data = transactionsRepository.getTransactionByDate(date)
+        return data
+    }
+
+    fun getTransactionByDateToDate(fromDate: String, toDate: String): List<Transactions>{
+        val data = transactionsRepository.getTransactionByDateToDate(fromDate, toDate)
+        return data
+    }
+
 
     fun insert(transactions: Transactions){
         transactionsRepository.insert(transactions)

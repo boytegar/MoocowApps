@@ -7,6 +7,7 @@ import androidx.room.TypeConverters
 import id.boytegar.moocow.helper.DataConverter
 
 @Entity(tableName = "transactions")
+@TypeConverters(DataConverter::class)
 class Transactions() {
     @NonNull
     @PrimaryKey(autoGenerate = true)
@@ -18,7 +19,6 @@ class Transactions() {
     var total_price = 0.0
     var tax = 0.0
     var status = 1
-    @TypeConverters(DataConverter::class)
     var menu: List<Cart> = listOf()
 
     constructor(

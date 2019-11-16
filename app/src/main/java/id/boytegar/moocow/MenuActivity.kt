@@ -27,6 +27,7 @@ class MenuActivity : AppCompatActivity() {
 
     lateinit var menuItemViewModel: MenuItemViewModel
     lateinit var list_category: List<Category>
+    var cart_numb = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
@@ -39,6 +40,7 @@ class MenuActivity : AppCompatActivity() {
 
         fab.setOnClickListener {
             val intent = Intent(this, AddMenuActivity::class.java)
+            cart_numb = 1
             startActivity(intent)
         }
 
